@@ -5,6 +5,10 @@ type TileData = {
   completed: boolean;
 };
 
+const alertBingo = () => {
+  alert("Bingo!"); // TODO: NOT THIS-- create a component for alerting
+};
+
 export const Tile = (
   { value, completed, onClick }: {
     value: string;
@@ -58,7 +62,7 @@ export const Board = ({ tiles }: { tiles: string[] }) => {
     );
     setBoardState(nextState);
     if (checkBingo(nextState)) {
-      alert("Bingo!");
+      alertBingo();
     }
   };
 
