@@ -76,6 +76,23 @@ app.get("/board/:game_id/:player_id", async (c) => {
   return c.json(player_board);
 });
 
+app.put("/toggle-tile/:game_id/:tile_id", async (c) => {
+  const game_id = await c.req.param("game_id");
+  const tile_id = await c.req.param("tile_id");
+
+  const toggleTile = db.prepare(
+    `UPDATE tile
+        SET completed = CASE WHEN completed = 1 THEN 0 ELSE 1 END
+        WHERE game_id = :game_id AND tile_id = :tile_id`,
+  ).all({ game_id, tile_id });
+  // TODO: verify success or return failure message
+  return c.json({
+    status: "success",
+    message: "Tile toggled successfully",
+    data: toggleTile,
+  });
+});
+
 // Debug routes
 app.get("/show-boards", (c) => {
   const response = db.prepare("SELECT * FROM board").all();

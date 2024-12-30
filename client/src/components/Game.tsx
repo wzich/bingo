@@ -50,12 +50,27 @@ const Game = () => {
   //     );
   //   }
 
-  const toggleTile = (tile_id: number) => {
-    setTiles((tiles: TileData[]) =>
-      tiles.map((t) =>
-        t.tile_id == tile_id ? { ...t, completed: !t.completed } : { ...t }
-      )
-    );
+  const toggleTile = async (tile_id: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/toggle-tile/${game_id}/${tile_id}`,
+        { method: "PUT", headers: { "Content-Type": "application/json" } },
+      );
+      if (response.ok) {
+        const json = await response.json();
+        if (json.status == "success") updateState();
+        else console.error(json);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    function updateState() {
+      setTiles((tiles: TileData[]) =>
+        tiles.map((t) =>
+          t.tile_id == tile_id ? { ...t, completed: !t.completed } : { ...t }
+        )
+      );
+    }
   };
 
   useEffect(() => {
