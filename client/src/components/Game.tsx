@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "wouter";
 import { Board } from "@components";
 import { TileData } from "../types.ts";
+import { checkBingo, getBoard, toggleTile } from "../utils.ts";
 
 const Game = () => {
   const [location, _navigate] = useLocation();
@@ -9,62 +10,26 @@ const Game = () => {
   const [tiles, setTiles] = useState([]);
   const game_id = location.split("/")[2];
 
-  const winningLines = [
-    [0, 1, 2, 3],
-    [4, 5, 6, 7],
-    [8, 9, 10, 11],
-    [12, 13, 14, 15],
-    [0, 4, 8, 12],
-    [1, 5, 9, 13],
-    [2, 6, 10, 14],
-    [3, 7, 11, 15],
-    [0, 5, 10, 15],
-    [3, 6, 9, 12],
-  ];
-
-  const getBoard = async (
-    { nickname, game_id }: { nickname: string; game_id: string },
-  ) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/board/${game_id}/${nickname}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        },
-      );
-      if (response.ok) {
-        const json = await response.json();
-        setTiles(json);
-      } else {
-        // Console error
-      }
-    } catch (e) {
-      console.error(e);
+  useEffect(() => {
+    if (nickname && game_id) {
+      (async () => {
+        const board = await getBoard({ nickname, game_id });
+        setTiles(board);
+      })();
     }
-  };
+  }, [nickname, game_id]);
 
-  //   function checkBingo(tiles: TileData[]) {
-  //     return winningLines.some((line) =>
-  //       line.every((idx) => tiles[idx].completed)
-  //     );
-  //   }
+  const hasBingo = useMemo(
+    () => (checkBingo(tiles)),
+    [tiles],
+  );
+  if (hasBingo) {
+    console.log("Bingo :D");
+  }
 
-  const toggleTile = async (tile_id: number) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/toggle-tile/${game_id}/${tile_id}`,
-        { method: "PUT", headers: { "Content-Type": "application/json" } },
-      );
-      if (response.ok) {
-        const json = await response.json();
-        if (json.status == "success") updateState(tile_id);
-        else console.error(json);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    function updateState(tile_id: number) {
+  const handleTileClick = async (tile_id: number) => {
+    const toggleTileSuccess = await toggleTile({ game_id, tile_id });
+    if (toggleTileSuccess) {
       setTiles((tiles: TileData[]) =>
         tiles.map((t) =>
           t.tile_id == tile_id ? { ...t, completed: !t.completed } : { ...t }
@@ -72,17 +37,9 @@ const Game = () => {
       );
     }
   };
-
-  useEffect(() => {
-    if (nickname && game_id) {
-      getBoard({ nickname, game_id });
-    }
-  }, [nickname, game_id]);
-
-  if (!nickname) {
+  if (!tiles.length) {
     return (
-      <>
-        <h1>Enter a nickname</h1>
+      <main className="flex justify-center m-5">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -93,24 +50,38 @@ const Game = () => {
               console.error("Nickname cannot be empty.");
             }
           }}
+          className="w-1/2 flex flex-col gap-3"
         >
+          <h1 className="text-4xl text-center text-slate-700">
+            Enter a nickname
+          </h1>
           <input
             type="text"
             name="nickname"
             placeholder="Your nickname"
+            className="border-s-gray-200 border-2 p-3 text-xl outline-none rounded-md text-slate-700"
             required
-            className="nickname-input"
           />
-          <button type="submit">Submit</button>
+          <button
+            type="submit"
+            className="bg-slate-300 text-xl p-3 rounded-md text-slate-700"
+          >
+            Submit
+          </button>
         </form>
-      </>
+      </main>
     );
   }
 
   return (
-    <main className="flex flex-column justify-center">
-      <h1>Game {game_id}</h1>
-      <Board tiles={tiles} handleTileClick={toggleTile} />
+    <main className="flex justify-center m-5">
+      <div className="w-1/2 flex flex-col gap-3">
+        <h1 className="text-4xl text-center text-slate-700">Game {game_id}</h1>
+        <Board tiles={tiles} onTileClick={handleTileClick} />
+        <div className="text-sm text-gray-500 text-right">
+          playing as {nickname}
+        </div>
+      </div>
     </main>
   );
 };

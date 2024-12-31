@@ -19,9 +19,9 @@ export const Tile = (
 );
 
 const Board = (
-  { tiles, handleTileClick }: {
+  { tiles, onTileClick }: {
     tiles: TileData[];
-    handleTileClick: (tile_id: number) => void;
+    onTileClick: (tile_id: number) => void;
   },
 ) => (
   <div className="grid grid-cols-4 gap-3">
@@ -31,7 +31,7 @@ const Board = (
         completed={tile.completed}
         tile_id={tile.tile_id}
         key={tile.tile_id}
-        onClick={handleTileClick}
+        onClick={onTileClick}
       />
     ))}
   </div>

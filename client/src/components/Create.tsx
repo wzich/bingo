@@ -44,14 +44,16 @@ const Create = () => {
           onChange={(e) => setTileValues(e.target.value)}
         >
         </textarea>
-        <input
+        {
+          /* <input
           type="text"
           className="border-s-gray-200 border-2 p-3 text-xl outline-none rounded-md text-slate-700"
           placeholder="Your Name"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
         >
-        </input>
+        </input> */
+        }
         <button
           type="submit"
           className="bg-slate-300 text-xl p-3 rounded-md text-slate-700"
