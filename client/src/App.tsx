@@ -3,7 +3,7 @@ import { Create, Game } from "@components";
 
 function App() {
   return (
-    <>
+    <div className="dark:bg-slate-800 h-screen">
       <Switch>
         <Route path="/">
           <Create />
@@ -15,7 +15,7 @@ function App() {
           <h1>404</h1>
         </Route>
       </Switch>
-    </>
+    </div>
   );
 }
 

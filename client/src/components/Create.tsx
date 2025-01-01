@@ -31,12 +31,14 @@ const Create = () => {
   };
 
   return (
-    <main className="flex justify-center m-5">
+    <main className="flex justify-center p-5">
       <form
         onSubmit={handleSubmit}
         className="w-1/2 flex flex-col gap-5"
       >
-        <h1 className="text-4xl text-center text-slate-700">New Game</h1>
+        <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
+          New Game
+        </h1>
         <textarea
           className="border-s-gray-200 border-2 p-3 text-xl outline-none h-96 rounded-md text-slate-700"
           placeholder="Add at least 16 values with a line break between"

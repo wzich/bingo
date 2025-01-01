@@ -39,7 +39,7 @@ const Game = () => {
   };
   if (!tiles.length) {
     return (
-      <main className="flex justify-center m-5">
+      <main className="flex justify-center p-5">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -52,7 +52,7 @@ const Game = () => {
           }}
           className="w-1/2 flex flex-col gap-3"
         >
-          <h1 className="text-4xl text-center text-slate-700">
+          <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
             Enter a nickname
           </h1>
           <input
@@ -74,9 +74,11 @@ const Game = () => {
   }
 
   return (
-    <main className="flex justify-center m-5">
+    <main className="flex justify-center p-5">
       <div className="w-1/2 flex flex-col gap-3">
-        <h1 className="text-4xl text-center text-slate-700">Game {game_id}</h1>
+        <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
+          Game {game_id}
+        </h1>
         <Board tiles={tiles} onTileClick={handleTileClick} />
         <div className="text-sm text-gray-500 text-right">
           playing as {nickname}
