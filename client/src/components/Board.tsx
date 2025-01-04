@@ -5,11 +5,11 @@ export const Tile = (
     value: string;
     completed: boolean;
     tile_id: number;
-    onClick: (value: number) => void;
+    onClick: (arg0: { tile_id: number; completed: boolean }) => void;
   },
 ) => (
   <div
-    onClick={() => onClick(tile_id)}
+    onClick={() => onClick({ tile_id, completed: !completed })}
     className={`aspect-square flex p-4 justify-center items-center rounded-md font-bold uppercase text-slate-800 transition-colors select-none cursor-default + ${
       completed
         ? "bg-green-400 dark:bg-green-700"
@@ -23,7 +23,7 @@ export const Tile = (
 const Board = (
   { tiles, onTileClick }: {
     tiles: TileData[];
-    onTileClick: (tile_id: number) => void;
+    onTileClick: (arg0: { tile_id: number; completed: boolean }) => void;
   },
 ) => (
   <div className="grid grid-cols-4 gap-3">

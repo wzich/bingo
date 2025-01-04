@@ -39,20 +39,3 @@ export const getBoard = async (
     console.error(e);
   }
 };
-
-export const toggleTile = async (
-  { tile_id, game_id }: { tile_id: number; game_id: string },
-) => {
-  try {
-    const response = await fetch(
-      `http://localhost:8000/toggle-tile/${game_id}/${tile_id}`,
-      { method: "PUT", headers: { "Content-Type": "application/json" } },
-    );
-    if (response.ok) {
-      const json = await response.json();
-      return json.status == "success";
-    }
-  } catch (e) {
-    console.error(e);
-  }
-};

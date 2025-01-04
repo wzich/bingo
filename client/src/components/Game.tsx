@@ -1,13 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { Board } from "@components";
 import { TileData } from "../types.ts";
-import { checkBingo, getBoard, toggleTile } from "../utils.ts";
+import { checkBingo, getBoard } from "../utils.ts";
+import GameEvent from "../../../types.ts";
 
 const Game = () => {
   const [location, _navigate] = useLocation();
   const [nickname, setNickname] = useState("");
   const [tiles, setTiles] = useState([]);
+  const [_messageLog, editMessageLog] = useState<GameEvent[]>([]);
+  const socketRef = useRef<WebSocket | null>(null);
   const game_id = location.split("/")[2];
 
   useEffect(() => {
@@ -17,7 +20,43 @@ const Game = () => {
         setTiles(board);
       })();
     }
+    const socket = new WebSocket(
+      `ws://localhost:8000/live/${game_id}/${nickname}`,
+    );
+    socketRef.current = socket;
+    socket.onopen = () => {
+      console.log("Connected to live game server");
+    };
+    socket.onmessage = (event) => {
+      const data: GameEvent = JSON.parse(event.data);
+      editMessageLog((messageLog: GameEvent[]) => [...messageLog, data]);
+      console.info(data);
+      if (data.type == "tile") {
+        if (!data.data?.tile_id || data.data.completed == undefined) {
+          throw "Missing tile data from server";
+        }
+        updateTile({
+          tile_id: data.data.tile_id,
+          completed: Boolean(data.data.completed),
+        });
+      }
+    };
+    socket.onclose = () => {
+      console.log("Disconnected from live game server");
+    };
+    return () => {
+      socket.close();
+    };
   }, [nickname, game_id]);
+
+  const updateTile = (
+    { tile_id, completed }: { tile_id: number; completed: boolean },
+  ) => {
+    console.info(`Updating tile ${tile_id} to be ${completed}`);
+    setTiles((tiles: TileData[]) =>
+      tiles.map((t) => t.tile_id == tile_id ? { ...t, completed } : { ...t })
+    );
+  };
 
   const hasBingo = useMemo(
     () => (checkBingo(tiles)),
@@ -27,14 +66,21 @@ const Game = () => {
     console.log("Bingo :D");
   }
 
-  const handleTileClick = async (tile_id: number) => {
-    const toggleTileSuccess = await toggleTile({ game_id, tile_id });
-    if (toggleTileSuccess) {
-      setTiles((tiles: TileData[]) =>
-        tiles.map((t) =>
-          t.tile_id == tile_id ? { ...t, completed: !t.completed } : { ...t }
-        )
-      );
+  const handleTileClick = (
+    { tile_id, completed }: { tile_id: number; completed: boolean },
+  ) => {
+    console.info("Sending click...");
+    if (socketRef.current && socketRef.current.readyState == WebSocket.OPEN) {
+      const message: GameEvent = {
+        type: "tile",
+        data: {
+          tile_id,
+          completed,
+        },
+      };
+      socketRef.current.send(JSON.stringify(message));
+    } else {
+      console.error("Failed to send message to socket server");
     }
   };
   if (!tiles.length) {
