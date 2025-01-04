@@ -1,19 +1,37 @@
 # Bingo
 
-This is a simple bingo game written in React and TypeScript on a Deno server
-with Vite.
+> Live-synced custom bingo games. Make a game with your own tiles and race
+> against friends to get bingo. When you cross off a tile, it'll be cross off on
+> everyone else's boards, too.
 
-## Gameplay
+### Gameplay
 
-A random 4x4 grid of animal emoji is generated when the page is loaded. Click on
-a tile to fill it in. When you've got bingo, you'll be alerted.
+On the landing page, provide at least sixteen options for tile values. A unique
+game link will be generated. Everyone joins with a nickname and gets a
+randomized board. When any player crosses off a tile, it'll update everyone
+else's board. The first to get four in a row wind bingo!
 
-## Running
+# Development
 
-You need to have Deno v2.0.0 or later installed to run this repo.
+### Tools
 
-Start a dev server:
+This game is built using [Deno](https://deno.land) and TypeScript.
 
-```
-$ deno task dev
-```
+##### Front-End
+
+React, Vite, Tailwind CSS.
+
+##### Back-End
+
+Hono
+
+### Development
+
+**Prerequisites:** Install
+[Deno](https://docs.deno.com/runtime/getting_started/installation/)
+
+1. Clone the repository
+2. Install dependencies for back-end: `deno install` from `server/`
+3. Install dependencies for front-end: `deno install` from `client/`
+4. Run server with inside `server/` with `deno task dev`
+5. Run client from inside `client/` with `deno task dev`
