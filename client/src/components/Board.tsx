@@ -1,4 +1,5 @@
 import { TileData } from "../types.ts";
+import { adaptFontSize } from "../utils.ts";
 
 export const Tile = (
   { value, completed, tile_id, onClick }: {
@@ -10,11 +11,11 @@ export const Tile = (
 ) => (
   <div
     onClick={() => onClick({ tile_id, completed: !completed })}
-    className={`aspect-square flex p-4 justify-center items-center rounded-md font-bold uppercase text-slate-800 dark:text-slate-50 transition-colors select-none cursor-default + ${
+    className={`aspect-square flex p-4 justify-center items-center rounded-md font-bold uppercase text-slate-800 dark:text-slate-50 transition-colors select-none cursor-default overflow-hidden + ${
       completed
         ? "bg-green-400 dark:bg-green-700"
         : "bg-slate-200 dark:bg-slate-700"
-    } + ${/\p{Extended_Pictographic}/u.test(value) ? "text-8xl" : "text-md"}`}
+    } + ${adaptFontSize(value)}`}
   >
     {value}
   </div>

@@ -39,3 +39,25 @@ export const getBoard = async (
     console.error(e);
   }
 };
+
+export const adaptFontSize = (text: string) => {
+  if (
+    /\p{Extended_Pictographic}/u.test(text) && /^[^a-zA-Z0-9]*$/u.test(text)
+  ) {
+    return "text-8xl";
+  } else if (text.length < 6) {
+    return "text-4xl";
+  } else if (text.length < 8) {
+    return "text-2xl";
+  } else if (text.length < 10) {
+    return "text-xl";
+  } else if (text.length < 15) {
+    return "text-lg";
+  } else if (text.length < 25) {
+    return "text-md";
+  } else if (text.length < 45) {
+    return "text-sm";
+  } else {
+    return "text-xs";
+  }
+};
