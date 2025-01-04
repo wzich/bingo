@@ -1,6 +1,9 @@
 import { Hono } from "jsr:@hono/hono";
 import { cors } from "jsr:@hono/hono/cors";
+import { upgradeWebSocket } from "jsr:@hono/hono/deno";
 import { Database } from "jsr:@db/sqlite";
+import { WSContext } from "jsr:@hono/hono/ws";
+import GameEvent from "../types.ts";
 
 const app = new Hono();
 const db = new Database(":memory:");
@@ -20,6 +23,61 @@ db.exec(
 // Create BOARD with cols BOARD_TILE_ID, GAME_ID, BOARD_ID, PLAYER_ID, TILE_ID
 db.exec(
   "CREATE TABLE IF NOT EXISTS board (game_id STRING not null, board_id STRING not null, player_id INTEGER not null, tile_id INTEGER not null)",
+);
+
+const handleGameEvent = (
+  { game_id, event }: { game_id: string; event: GameEvent },
+) => {
+  if (event.type == "tile") {
+    const tile_id = event.data?.tile_id;
+    if (!tile_id) {
+      return { status: "failed", message: "Must provide tile id" };
+    }
+    const completed = event.data?.completed;
+    return toggleTile({ game_id, tile_id, completed });
+  }
+};
+
+const games = new Map<
+  string,
+  Array<{ socket: WSContext; player_id: string }>
+>();
+
+app.get(
+  "/live/:game_id/:player_id",
+  upgradeWebSocket(async (c) => {
+    const game_id = await c.req.param("game_id");
+    const player_id = await c.req.param("player_id");
+    const gameClients = games.get(game_id) || [];
+    return {
+      onOpen(_event, ws) {
+        console.log(`Client ${player_id} connected to game ${game_id}`);
+        gameClients.push({ socket: ws, player_id });
+        games.set(game_id, gameClients);
+      },
+      onMessage(event, ws) {
+        try {
+          const data: GameEvent = JSON.parse(String(event.data));
+          const handlerResponse = handleGameEvent({ game_id, event: data });
+          if (handlerResponse?.status == "success") {
+            for (const client in gameClients) {
+              gameClients[client].socket.send(JSON.stringify({
+                type: "tile",
+                data: data.data,
+              }));
+            }
+          }
+        } catch (e) {
+          ws.send(`Malformed JSON string: ${event.data}`);
+          console.error(e);
+        }
+      },
+      onClose: () => {
+        console.log("Bye bye!");
+        // TODO: remove client from gameClients
+      },
+    };
+  }),
 );
 
 app.use("/*", cors());
@@ -45,6 +103,10 @@ app.post("/game", async (c) => {
       ).all({ game_id, tile });
     }
   })();
+
+  if (make_game) {
+    games.set(game_id, []);
+  }
 
   return make_game
     ? c.json({ status: "success", game_id })
@@ -76,21 +138,41 @@ app.get("/board/:game_id/:player_id", async (c) => {
   return c.json(player_board);
 });
 
-app.put("/toggle-tile/:game_id/:tile_id", async (c) => {
-  const game_id = await c.req.param("game_id");
-  const tile_id = await c.req.param("tile_id");
-
-  const toggleTile = db.prepare(
-    `UPDATE tile
-        SET completed = CASE WHEN completed = 1 THEN 0 ELSE 1 END
+const toggleTile = (
+  { game_id, tile_id, completed }: {
+    game_id: string;
+    tile_id: number;
+    completed?: boolean;
+  },
+) => {
+  let sql_result;
+  if (completed === undefined) {
+    sql_result = db.prepare(
+      `UPDATE tile
+          SET completed = CASE WHEN completed = 1 THEN 0 ELSE 1 END
+          WHERE game_id = :game_id AND tile_id = :tile_id`,
+    ).all({ game_id, tile_id });
+  } else {
+    const insert_val = completed ? 1 : 0;
+    sql_result = db.prepare(
+      `UPDATE tile
+        SET completed = :insert_val
         WHERE game_id = :game_id AND tile_id = :tile_id`,
-  ).all({ game_id, tile_id });
+    ).all({ game_id, insert_val, tile_id });
+  }
+
   // TODO: verify success or return failure message
-  return c.json({
+  return {
     status: "success",
     message: "Tile toggled successfully",
-    data: toggleTile,
-  });
+    data: sql_result,
+  };
+};
+
+app.put("/toggle-tile/:game_id/:tile_id", async (c) => {
+  const game_id = await c.req.param("game_id");
+  const tile_id = Number(await c.req.param("tile_id"));
+  return c.json(toggleTile({ game_id, tile_id }));
 });
 
 // Debug routes
