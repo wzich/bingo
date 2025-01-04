@@ -26,5 +26,4 @@
     "@components": "./src/components/index.ts"
   },
   "nodeModulesDir": "auto"
-  
 }
