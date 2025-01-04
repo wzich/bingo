@@ -10,7 +10,7 @@ export const Tile = (
 ) => (
   <div
     onClick={() => onClick({ tile_id, completed: !completed })}
-    className={`aspect-square flex p-4 justify-center items-center rounded-md font-bold uppercase text-slate-800 transition-colors select-none cursor-default + ${
+    className={`aspect-square flex p-4 justify-center items-center rounded-md font-bold uppercase text-slate-800 dark:text-slate-50 transition-colors select-none cursor-default + ${
       completed
         ? "bg-green-400 dark:bg-green-700"
         : "bg-slate-200 dark:bg-slate-700"
