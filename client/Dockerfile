@@ -8,6 +8,6 @@ ADD . /app/
 
 RUN deno install
 
-RUN deno build
+RUN deno task build
 
 CMD ["deno", "serve"]
