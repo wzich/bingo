@@ -10,4 +10,4 @@ RUN deno install
 
 RUN deno task build
 
-CMD ["deno", "serve"]
+CMD ["deno", "task", "serve"]
