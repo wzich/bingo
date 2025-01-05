@@ -4,9 +4,7 @@ EXPOSE 8000
 
 WORKDIR /app
 
-ADD server/ /app/
-
-ADD types.ts /app/
+ADD . /app/
 
 RUN deno install --entrypoint server.ts
 
