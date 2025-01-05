@@ -4,6 +4,6 @@ api.zich.wtf {
 
 
 bingo.zich.wtf {
-	reverse_proxy :5173
+	reverse_proxy :80
 }
 
