@@ -6,6 +6,8 @@ WORKDIR /app
 
 ADD . /app/
 
+ADD ../types.ts /app/
+
 RUN deno install
 
 RUN deno build
