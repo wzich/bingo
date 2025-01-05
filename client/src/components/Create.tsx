@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 
 const Create = () => {
-  const [nickname, setNickname] = useState("");
+  const [nickname, _setNickname] = useState("");
   const [tileValues, setTileValues] = useState("");
   const [_location, navigate] = useLocation();
 
