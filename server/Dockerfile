@@ -1,3 +1,11 @@
-FROM caddy:2.8
+FROM denoland/deno
 
-COPY Caddyfile /etc/caddy/Caddyfile
+EXPOSE 8000
+
+WORKDIR /app
+
+ADD . /app/
+
+RUN deno install --entrypoint server.ts
+
+CMD ["run", "--allow-net", "server.ts"]

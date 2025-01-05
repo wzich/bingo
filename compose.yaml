@@ -8,13 +8,17 @@ services:
       - "80:80"
       - "443:443"
       - "443:443/udp"
+    volumes:
+      - .caddy:/etc/caddy
   server:
-    image: denoland/deno:2.1.4
+    build:
+      context: server
     restart: unless-stopped
     ports:
       - "8000:8000"
   client:
-    image: denoland/deno:2.1.4
+    build:
+      context: client
     restart: unless-stopped
     ports:
       - "5173:80"
