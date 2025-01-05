@@ -1,7 +1,9 @@
-api.zich.wtf 
+api.zich.wtf {
+	reverse_proxy server:8000
+}
 
-reverse_proxy server:8000
 
-bingo.zich.wtf
+bingo.zich.wtf{
+	reverse_proxy client:80
+}
 
-reverse_proxy client:80
