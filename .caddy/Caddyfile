@@ -1,4 +1,6 @@
-debug
+{
+	debug
+}
 
 api.zich.wtf {
 	reverse_proxy http://server:8000
