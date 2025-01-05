@@ -1,0 +1,8 @@
+bingo-api.zich.wtf {
+	reverse_proxy server:8000
+}
+
+bingo.zich.wtf {
+	reverse_proxy client:8001
+}
+

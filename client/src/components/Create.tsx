@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 
 const Create = () => {
-  const [nickname, setNickname] = useState("");
+  const [nickname, _setNickname] = useState("");
   const [tileValues, setTileValues] = useState("");
   const [_location, navigate] = useLocation();
 
@@ -13,7 +13,7 @@ const Create = () => {
       tiles: tileValues.split("\n"),
     };
     try {
-      const response = await fetch("http://localhost:8000/game", {
+      const response = await fetch("https://bingo-api.zich.wtf:8000/game", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

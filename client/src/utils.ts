@@ -23,7 +23,7 @@ export const getBoard = async (
 ) => {
   try {
     const response = await fetch(
-      `http://localhost:8000/board/${game_id}/${nickname}`,
+      `https://bingo-api.zich.wtf:8000/board/${game_id}/${nickname}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -39,6 +39,14 @@ export const getBoard = async (
     console.error(e);
   }
 };
+
+export interface GameEvent {
+  type: string;
+  data?: {
+    tile_id: number;
+    completed: boolean;
+  };
+}
 
 export const adaptFontSize = (text: string) => {
   if (
