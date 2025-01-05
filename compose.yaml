@@ -21,4 +21,4 @@ services:
       context: client
     restart: unless-stopped
     ports:
-      - "80:8000"
+      - "5173:8000"
