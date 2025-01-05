@@ -3,7 +3,7 @@ api.zich.wtf {
 }
 
 
-bingo.zich.wtf{
+bingo.zich.wtf {
 	reverse_proxy client:80
 }
 
