@@ -23,10 +23,13 @@ jobs:
         with:
           deno-version: v2.x
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: lts/*
+
+      - name: Move to client module
+        run: "cd client"
 
       - name: Install step
         run: "deno install"
@@ -40,5 +43,3 @@ jobs:
           project: "zich-bingo"
           entrypoint: "https://deno.land/std@0.217.0/http/file_server.ts"
           root: "dist"
-          
-          
