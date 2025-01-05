@@ -2,8 +2,6 @@ services:
   caddy:
     image: caddy:2.8
     restart: unless-stopped
-    networks:
-      - reverse_proxy
     cap_add:
       - NET_ADMIN
     ports:
@@ -16,20 +14,11 @@ services:
     build:
       context: server
     restart: unless-stopped
-    networks:
-      - reverse_proxy
     ports:
       - 8000:8000
   client:
     build:
       context: client
     restart: unless-stopped
-    networks:
-      - reverse_proxy
     ports:
       - 5173:8000
-
-networks:
-  reverse_proxy:
-    driver: "bridge"
-    name: ${NETWORK_NAME:-reverse_proxy}
