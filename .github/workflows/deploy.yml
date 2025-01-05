@@ -29,16 +29,13 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "cd client && deno install"
-
-      - name: Build step
-        run: "cd client && deno task build"
+        run: "cd server && deno install"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "zich-bingo"
-          entrypoint: "https://deno.land/std@0.217.0/http/file_server.ts"
-          root: "client/dist"
+          project: "zich-bingo-server"
+          entrypoint: "server.js"
+          root: "server"
           
           
