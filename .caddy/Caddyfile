@@ -1,4 +1,4 @@
-api.zich.wtf {
+bingo-api.zich.wtf {
 	reverse_proxy server:8000
 }
 

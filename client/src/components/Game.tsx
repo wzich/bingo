@@ -20,7 +20,7 @@ const Game = () => {
       })();
     }
     const socket = new WebSocket(
-      `wss://api.zich.wtf:8000/live/${game_id}/${nickname}`,
+      `wss://bingo-api.zich.wtf:8000/live/${game_id}/${nickname}`,
     );
     socketRef.current = socket;
     socket.onopen = () => {

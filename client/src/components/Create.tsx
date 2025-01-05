@@ -13,7 +13,7 @@ const Create = () => {
       tiles: tileValues.split("\n"),
     };
     try {
-      const response = await fetch("https://api.zich.wtf:8000/game", {
+      const response = await fetch("https://bingo-api.zich.wtf:8000/game", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

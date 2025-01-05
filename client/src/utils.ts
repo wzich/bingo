@@ -23,7 +23,7 @@ export const getBoard = async (
 ) => {
   try {
     const response = await fetch(
-      `https://api.zich.wtf:8000/board/${game_id}/${nickname}`,
+      `https://bingo-api.zich.wtf:8000/board/${game_id}/${nickname}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
