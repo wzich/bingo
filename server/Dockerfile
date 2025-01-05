@@ -8,4 +8,4 @@ ADD . /app/
 
 RUN deno install --entrypoint server.ts
 
-CMD ["run", "--allow-net", "server.ts"]
+CMD ["deno", "task", "serve"]
