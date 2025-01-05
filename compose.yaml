@@ -1,0 +1,20 @@
+services:
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+  server:
+    image: denoland/deno:2.1.4
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+  client:
+    image: denoland/deno:2.1.4
+    restart: unless-stopped
+    ports:
+      - "5173:80"
