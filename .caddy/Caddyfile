@@ -1,9 +1,9 @@
 api.zich.wtf {
-	reverse_proxy server:8000
+	reverse_proxy :8000
 }
 
 
 bingo.zich.wtf {
-	reverse_proxy client:5173
+	reverse_proxy :5173
 }
 
