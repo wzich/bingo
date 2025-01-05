@@ -4,6 +4,7 @@ api.zich.wtf {
 
 
 bingo.zich.wtf {
+	debug
 	reverse_proxy http://client:5173
 }
 
