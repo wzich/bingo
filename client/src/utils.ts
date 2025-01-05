@@ -40,6 +40,14 @@ export const getBoard = async (
   }
 };
 
+export interface GameEvent {
+  type: string;
+  data?: {
+    tile_id: number;
+    completed: boolean;
+  };
+}
+
 export const adaptFontSize = (text: string) => {
   if (
     /\p{Extended_Pictographic}/u.test(text) && /^[^a-zA-Z0-9]*$/u.test(text)

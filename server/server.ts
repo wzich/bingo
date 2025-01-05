@@ -3,7 +3,14 @@ import { cors } from "jsr:@hono/hono/cors";
 import { upgradeWebSocket } from "jsr:@hono/hono/deno";
 import { Database } from "jsr:@db/sqlite";
 import { WSContext } from "jsr:@hono/hono/ws";
-import GameEvent from "../types.ts";
+
+interface GameEvent {
+  type: string;
+  data?: {
+    tile_id: number;
+    completed: boolean;
+  };
+}
 
 const app = new Hono();
 const db = new Database(":memory:");

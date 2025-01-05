@@ -2,8 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { Board } from "@components";
 import { TileData } from "../types.ts";
-import { checkBingo, getBoard } from "../utils.ts";
-import GameEvent from "../../../types.ts";
+import { checkBingo, GameEvent, getBoard } from "../utils.ts";
 
 const Game = () => {
   const [location, _navigate] = useLocation();
