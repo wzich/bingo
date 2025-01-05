@@ -34,7 +34,7 @@ jobs:
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "zich-bingo-server"
+          project: "zich-bingo"
           entrypoint: "server.js"
           root: "server"
           
