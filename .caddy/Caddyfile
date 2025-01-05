@@ -1,10 +1,10 @@
+debug
+
 api.zich.wtf {
 	reverse_proxy http://server:8000
 }
 
-
 bingo.zich.wtf {
-	debug
 	reverse_proxy http://client:5173
 }
 
