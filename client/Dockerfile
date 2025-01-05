@@ -4,9 +4,9 @@ EXPOSE 5173
 
 WORKDIR /app
 
-ADD . /app/
+ADD client/ /app/
 
-ADD ../types.ts /app/
+ADD types.ts /app/
 
 RUN deno install
 

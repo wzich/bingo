@@ -12,13 +12,15 @@ services:
       - .caddy:/etc/caddy
   server:
     build:
-      context: server
+      context: .
+      dockerfile: server.Dockerfile
     restart: unless-stopped
     ports:
       - "8000:8000"
   client:
     build:
-      context: client
+      context: .
+      dockerfile: client.Dockerfile
     restart: unless-stopped
     ports:
       - "5173:80"
