@@ -60,9 +60,9 @@ export const adaptFontSize = (text: string) => {
   } else if (text.length < 10) {
     return "md:text-xl text-lg";
   } else if (text.length < 15) {
-    return "md:text-lg text-md";
+    return "md:text-lg text-base";
   } else if (text.length < 25) {
-    return "md:text-md text-sm";
+    return "md:text-md text-xs";
   } else if (text.length < 45) {
     return "md:text-sm text-xs";
   } else {
