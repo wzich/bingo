@@ -1,5 +1,8 @@
 bingo-api.zich.wtf {
 	reverse_proxy server:8000
+	handle /game/* {
+		reverse_proxy server:8000
+	}
 }
 
 bingo.zich.wtf {
