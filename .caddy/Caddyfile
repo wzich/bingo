@@ -1,0 +1,10 @@
+bingo-api.zich.wtf {
+	reverse_proxy server:8000
+}
+
+bingo.zich.wtf {
+	root * /srv
+	encode gzip
+	try_files {path} /index.html
+	file_server
+}

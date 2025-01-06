@@ -1,0 +1,26 @@
+services:
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - .caddy/Caddyfile:/etc/caddy/Caddyfile
+      - .caddy/caddy_data:/data
+      - .caddy/caddy_config:/config
+      - client/dist:/srv
+  server:
+    build:
+      context: server
+    restart: unless-stopped
+    ports:
+      - 8000:8000
+
+volumes:
+  caddy_data:
+  caddy_config:
+  client/dist:
