@@ -52,20 +52,20 @@ export const adaptFontSize = (text: string) => {
   if (
     /\p{Extended_Pictographic}/u.test(text) && /^[^a-zA-Z0-9]*$/u.test(text)
   ) {
-    return "text-8xl";
+    return "md:text-8xl text-4xl";
   } else if (text.length < 6) {
-    return "text-4xl";
+    return "md:text-4xl text-2xl";
   } else if (text.length < 8) {
-    return "text-2xl";
+    return "md:text-2xl text-xl";
   } else if (text.length < 10) {
-    return "text-xl";
+    return "md:text-xl text-lg";
   } else if (text.length < 15) {
-    return "text-lg";
+    return "md:text-lg text-sm";
   } else if (text.length < 25) {
-    return "text-md";
+    return "md:text-md text-xs";
   } else if (text.length < 45) {
-    return "text-sm";
+    return "md:text-sm text-[6px]";
   } else {
-    return "text-xs";
+    return "md:text-xs text-xs";
   }
 };
