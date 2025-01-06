@@ -95,7 +95,7 @@ const Game = () => {
               console.error("Nickname cannot be empty.");
             }
           }}
-          className="w-1/2 flex flex-col gap-3"
+          className="md:w-1/2 w-full flex flex-col gap-3"
         >
           <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
             Enter a nickname
@@ -120,7 +120,7 @@ const Game = () => {
 
   return (
     <main className="flex justify-center p-5">
-      <div className="w-1/2 flex flex-col gap-3">
+      <div className="md:w-1/2 w-full flex flex-col gap-3">
         <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
           Game {game_id}
         </h1>

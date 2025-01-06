@@ -34,7 +34,7 @@ const Create = () => {
     <main className="flex justify-center p-5">
       <form
         onSubmit={handleSubmit}
-        className="w-1/2 flex flex-col gap-5"
+        className="md:w-1/2 w-full flex flex-col gap-5"
       >
         <h1 className="text-4xl text-center text-slate-700 dark:text-slate-50">
           New Game
