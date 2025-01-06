@@ -4,7 +4,7 @@ bingo-api.zich.wtf {
 
 bingo.zich.wtf {
 	root * /root/bingo/client/dist
-	ecode gzip
+	encode gzip
 	try_files {path} /index.html
 	file_server
 }
